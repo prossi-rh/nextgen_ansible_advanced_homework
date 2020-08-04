@@ -1,6 +1,4 @@
-- hosts: localhost
-  connection: local
+- hosts: workstation
   become: no
-  gather_facts: true
   roles:
    - osp-servers
