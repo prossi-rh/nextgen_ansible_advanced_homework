@@ -21,13 +21,10 @@ N/A
 Example Playbook
 ----------------
 
-- hosts: localhost
-  connection: local
+- hosts: workstation
   become: no
-  gather_facts: true
   roles:
    - osp-servers
-
 
 License
 -------
@@ -37,4 +34,4 @@ BSD
 Author Information
 ------------------
 
-prossi-rh for Ansible Advanced Homework
+Pierluigi Rossi for Ansible Advanced Homework
