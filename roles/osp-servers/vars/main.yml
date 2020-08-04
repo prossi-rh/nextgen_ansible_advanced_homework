@@ -1,5 +1,6 @@
 ---
-# vars file for osp.servers
+# vars file for osp-servers
+
 osp_servers:
   frontend:
     name: frontend
@@ -8,6 +9,10 @@ osp_servers:
     key_name: ansible_ssh
     flavor: m1.medium
     security_group: frontend
+    net_interface: 
+      - net-name: int_network
+    int_network: int_network
+    ext_network: ext_network
     meta:
       - { group: frontends, deployment_name: QA}
   app1:
@@ -17,6 +22,10 @@ osp_servers:
     key_name: ansible_ssh
     flavor: m1.medium
     security_group: apps
+    net_interface: 
+      - net-name: int_network
+    int_network: int_network
+    ext_network: ext_network
     meta:
       - { group: apps, deployment_name: QA}
   app2:
@@ -26,6 +35,10 @@ osp_servers:
     key_name: ansible_ssh
     flavor: m1.medium
     security_group: apps
+    net_interface: 
+      - net-name: int_network
+    int_network: int_network
+    ext_network: ext_network
     meta:
       - { group: apps, deployment_name: QA}
   db:
@@ -35,5 +48,9 @@ osp_servers:
     key_name: ansible_ssh
     flavor: m1.medium
     security_group: db
+    net_interface: 
+      - net-name: int_network
+    int_network: int_network
+    ext_network: ext_network
     meta:
       - { group: appdbs, deployment_name: QA}
