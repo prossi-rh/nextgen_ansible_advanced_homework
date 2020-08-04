@@ -1,5 +1,5 @@
 - name: Create Homework Assignment project
-  homework_project:
+  tower_project:
     name: "{{proj_name}}"
     description: Homework Assignment project
     organization: "{{org_name}}"
