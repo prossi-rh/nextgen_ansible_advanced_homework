@@ -1,11 +1,19 @@
 - hosts: workstation
   gather_facts: false
   tasks:
-  - name: OpenStack servers
-  - name: Curl website
+  - name: Get OpenStack Instances Info
+    os_server_info:
+      cloud: openstack
+      server: frontend*
+      filters:
+        vm_state: active
+    register: osp_frontends
 
-  - name: Fail if 'Ansible has done its job' is not in the page content
-    fail:
-    when: "'Ansible has done its job' not in webpage.results[0].content"
-    tags:
-      - osp.smoke
+  - name: Test website
+    uri:
+      url: "http://{{ item.public_v4 }}"
+      return_content: yes
+      status_code: 200
+    loop: "{{ osp_frontends.openstack_servers }}"
+    register: webpage
+    failed_when: "'Ansible has done its job' not in webpage.content"
