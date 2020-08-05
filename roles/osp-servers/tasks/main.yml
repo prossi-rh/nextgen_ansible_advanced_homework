@@ -1,3 +1,47 @@
 ---
 
 # tasks file for osp.servers
+
+- name: Provisioning QA Instances
+  block:
+    - name: Provision RHOSP Instance
+      os_server:
+        cloud: openstack
+        name: "{{item.value.name}}"
+        state: "{{item.value.state}}"
+        image: "{{item.value.image}}"
+        key_name: "{{item.value.key_name}}"
+        flavor: "{{item.value.flavor}}"
+        nics: "{{item.value.net_interface}}"
+        meta: "{{item.value.meta[0]}}"
+        security_groups: ["{{item.value.security_group}}"]
+        user_data: |
+          #!/bin/bash
+          curl -o /tmp/openstack.pub http://www.opentlc.com/download/ansible_bootcamp/openstack_keys/openstack.pub
+          cat /tmp/openstack.pub >> /home/cloud-user/.ssh/authorized_keys
+      loop: "{{osp_servers | dict2items}}"
+    
+    - name: Allocate FIPs
+      os_floating_ip:
+        state: "{{item.value.state}}"
+        server: "{{item.value.name}}"
+        network: "{{item.value.ext_network}}"
+        nat_destination: "{{item.value.int_network}}"
+      loop: "{{osp_servers | dict2items}}"
+
+# Blocks error handling
+
+  rescue: 
+    - name: Output Failure Message
+      debug:
+        msg: "RHOSP Provisioning Failed. Cleaning up Env"
+        
+    - name: Delete failed instances
+      os_server: 
+        name: "{{item.value.name}}"
+        state: absent
+      loop: "{{osp_servers | dict2items}}"
+
+    - name: After clean up
+      fail:
+      when: yes
