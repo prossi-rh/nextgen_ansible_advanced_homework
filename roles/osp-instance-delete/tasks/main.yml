@@ -1,5 +1,14 @@
 ---
 # tasks file for roles/osp-instance-delete
-  - name: Fetch Instance Info
-  - name: Delete instances
-   
+  - name: Clean RHOSP Environment
+    block:
+      - name: Fetch Instance Info
+        os_server_info:
+          cloud: openstack
+        register: rhosp_env
+
+      - name: Delete instances
+        os_server:
+          name: "{{item.name}}"
+          state: absent
+        loop: "{{ rhosp_env.openstack_servers }}"
