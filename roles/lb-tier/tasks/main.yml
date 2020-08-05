@@ -1,3 +1,21 @@
 ---
+- name: Install {{ payload }}
+  yum:
+    name: "{{ payload }}"
+    state: latest
 
+- name: Enable {{ payload }}
+  service:
+    name: "{{ payload }}"
+    enabled: yes
 
+- name: Configure HAproxy to balance over app servers
+  template:
+    src: haproxy.cfg.j2
+    dest: /etc/haproxy/haproxy.cfg
+    mode: 0644
+
+- name: Start {{ payload }}
+  service:
+    name: "{{ payload }}"
+    state: restarted
