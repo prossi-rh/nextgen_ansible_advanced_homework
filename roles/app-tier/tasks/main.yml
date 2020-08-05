@@ -1,2 +1,27 @@
 ---
 
+- name: Install {{ payload }}
+  yum:
+    name: "{{ payload }}"
+    state: latest
+
+- name: Enable {{ payload }} at boot
+  service:
+    name: "{{ payload }}"
+    enabled: yes
+
+- name: Create Tomcat default web_root
+  file:
+    path: "{{ tomcat_web_root }}"
+    state: directory
+
+- name: copy index.html to Tomcat web_root
+  template:
+    src: index.html.j2
+    dest: "{{ tomcat_web_root }}/index.html"
+    mode: 0644
+
+- name: restart Tomcat
+  service:
+    name: "{{ payload }}"
+    state: restarted
