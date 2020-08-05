@@ -23,6 +23,7 @@
     
     - name: Allocate FIPs
       os_floating_ip:
+        cloud: openstack
         state: "{{item.value.state}}"
         server: "{{item.value.name}}"
         network: "{{item.value.ext_network}}"
