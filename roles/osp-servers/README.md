@@ -21,10 +21,10 @@ N/A
 Example Playbook
 ----------------
 
-- hosts: workstation
-  become: no
-  roles:
-   - osp-servers
+     - hosts: workstation
+       become: no
+       roles:
+         - osp-servers
 
 License
 -------
