@@ -39,6 +39,7 @@
         
     - name: Delete failed instances
       os_server: 
+        cloud: openstack
         name: "{{item.value.name}}"
         state: absent
       loop: "{{osp_servers | dict2items}}"
