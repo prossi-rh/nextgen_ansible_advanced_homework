@@ -9,6 +9,7 @@
 
       - name: Delete instances
         os_server:
+          cloud: openstack
           name: "{{item.name}}"
           state: absent
         loop: "{{ rhosp_env.openstack_servers }}"
